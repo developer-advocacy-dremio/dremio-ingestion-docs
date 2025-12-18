@@ -41,9 +41,9 @@ These approaches leverage Dremio compute, Dremio SQL, and Dremio-managed
 Iceberg metadata.
 
 
-## Ingesting Data Outside of Dremio
+## Ingesting with Other Tools
 
-In some cases, ingestion happens outside of Dremio. This is common when
+In some cases, ingestion happens with other tools. This is common when
 pipelines already exist, when streaming systems are involved, or when
 specialized engines are required.
 
