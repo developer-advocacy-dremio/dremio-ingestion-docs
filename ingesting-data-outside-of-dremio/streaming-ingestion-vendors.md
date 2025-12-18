@@ -225,7 +225,6 @@ quickly data becomes queryable.
 - Kafka-first stacks that want simple streaming-to-lakehouse without running a
   stream processor.
 
----
 
 ### Confluent Tableflow (Confluent Cloud)
 
@@ -251,8 +250,6 @@ quickly data becomes queryable.
 **Best fit**
 - Teams that want “stream-to-table” with the least possible engineering and ops.
 
----
-
 ### Aiven for Kafka Connect (Managed)
 
 **What it is**
@@ -275,7 +272,6 @@ quickly data becomes queryable.
 **Best fit**
 - Kafka Connect users who want managed ops and direct REST-catalog destinations.
 
----
 
 ### Redpanda (Kafka-compatible) + Iceberg Topics
 
@@ -299,7 +295,6 @@ quickly data becomes queryable.
 - Teams that want broker-level “stream to Iceberg” with a REST catalog and minimal
   external components.
 
----
 
 ### StreamNative / Apache Pulsar + Iceberg Sink Connector
 
