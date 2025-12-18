@@ -31,11 +31,11 @@ Apache Iceberg tables directly in the Open Catalog. These approaches are
 typically the fastest path to production for batch ingestion and analytics
 workloads.
 
-- [Uploading a File](ingesting-data-using-dremio/uploading-a-file.md)  
-- [CTAS and INSERT SELECT](ingesting-data-using-dremio/ctas-insert-select.md)  
-- [COPY INTO and CREATE PIPE](ingesting-data-using-dremio/copy-into-create-pipe.md)  
-- [Ingesting with DremioFrame](ingesting-data-using-dremio/dremioframe.md)  
-- [Orchestration Options](ingesting-data-using-dremio/orchestration-options.md)  
+- [Uploading a File](./ingesting-data-using-dremio/uploading-a-file.md)  
+- [CTAS and INSERT SELECT](./ingesting-data-using-dremio/ctas-insert-select.md)  
+- [COPY INTO and CREATE PIPE](./ingesting-data-using-dremio/copy-into-create-pipe.md)  
+- [Ingesting with DremioFrame](./ingesting-data-using-dremio/dremioframe.md)  
+- [Orchestration Options](./ingesting-data-using-dremio/orchestration-options.md)  
 
 These approaches leverage Dremio compute, Dremio SQL, and Dremio-managed
 Iceberg metadata.
@@ -50,10 +50,10 @@ specialized engines are required.
 These approaches still write Apache Iceberg tables into the same
 Apache Polaris–based catalog, allowing Dremio to query and govern the data.
 
-- [Using Python](ingesting-data-outside-of-dremio/using-python.md)  
-- [Using Apache Spark](ingesting-data-outside-of-dremio/using-apache-spark.md)  
-- [Using Batch Ingestion Vendors](ingesting-data-outside-of-dremio/batch-ingestion-vendors.md)  
-- [Using Streaming Ingestion Vendors](ingesting-data-outside-of-dremio/streaming-ingestion-vendors.md)  
+- [Using Python](./ingesting-data-outside-of-dremio/using-python.md)  
+- [Using Apache Spark](./ingesting-data-outside-of-dremio/using-apache-spark.md)  
+- [Using Batch Ingestion Vendors](./ingesting-data-outside-of-dremio/batch-ingestion-vendors.md)  
+- [Using Streaming Ingestion Vendors](./ingesting-data-outside-of-dremio/streaming-ingestion-vendors.md)  
 
 These patterns emphasize open standards, engine interoperability, and
 decoupled ingestion architectures.
