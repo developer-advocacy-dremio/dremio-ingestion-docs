@@ -127,7 +127,6 @@ General guidance:
 - Use **enterprise ETL tools** when governance and transformations dominate
 - Avoid overengineering simple ingestion pipelines
 
----
 
 ## Iceberg-Specific Best Practices
 
@@ -139,7 +138,6 @@ Regardless of the tool used:
 - Plan for compaction and snapshot expiration
 - Use a single Iceberg REST catalog where possible
 
----
 
 ## Summary
 

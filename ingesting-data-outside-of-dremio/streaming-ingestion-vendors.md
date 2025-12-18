@@ -190,6 +190,191 @@ Avoid it when:
 In these cases, batch ingestion using COPY INTO, CTAS, or scheduled jobs is often
 more cost-effective and easier to manage.
 
+## Streaming Vendors and Feature Sets for Iceberg REST Catalog Destinations
+
+This section summarizes production-oriented streaming options that can land data
+into Apache Iceberg while using an Iceberg REST Catalog for table metadata.
+
+Each option differs in how much it abstracts, how much you operate, and how
+quickly data becomes queryable.
+
+
+### Confluent Kafka Connect + Iceberg Sink Connector
+
+**What it is**
+- Kafka Connect is Confluent’s connector runtime for moving data between Kafka
+  and external systems. 
+- The Apache Iceberg Kafka Connect sink writes Kafka topic data into Iceberg
+  tables and can use an Iceberg REST catalog. 
+
+**Feature set**
+- Writes Kafka topics to Iceberg tables (typically Parquet files plus Iceberg metadata).
+- REST catalog support via the connector’s catalog configuration. 
+- Works in self-managed Connect clusters and managed environments.
+
+**Strengths**
+- Low-code operational model.
+- Broad Kafka ecosystem compatibility.
+- Strong fit when Kafka already exists as the event backbone.
+
+**Tradeoffs**
+- Micro-batch commits can create small files if commit intervals are too short.
+- Connector tuning matters at scale.
+
+**Best fit**
+- Kafka-first stacks that want simple streaming-to-lakehouse without running a
+  stream processor.
+
+---
+
+### Confluent Tableflow (Confluent Cloud)
+
+**What it is**
+- A managed Confluent Cloud feature that materializes Kafka topics or Flink tables
+  as Iceberg or Delta tables. 
+- Includes a built-in Iceberg REST catalog and can integrate with external catalogs
+  such as Apache Polaris. 
+
+**Feature set**
+- Built-in Iceberg REST Catalog for tables created by Tableflow. 
+- External catalog integration with Polaris / Snowflake Open Catalog. 
+- Storage flexibility depending on product tier (BYOS and managed options).
+
+**Strengths**
+- Minimal operations.
+- Fast path from Kafka topics to queryable Iceberg tables.
+
+**Tradeoffs**
+- Primarily a Confluent Cloud-centric workflow.
+- You follow Tableflow’s operational and governance boundaries.
+
+**Best fit**
+- Teams that want “stream-to-table” with the least possible engineering and ops.
+
+---
+
+### Aiven for Kafka Connect (Managed)
+
+**What it is**
+- Managed Kafka Connect that includes an Iceberg sink connector option.
+
+**Feature set**
+- Explicit support for AWS Glue REST catalog and Snowflake Open Catalog (Polaris),
+  plus other catalog modes depending on your setup. 
+- Notes and constraints are documented (example: Glue REST requires pre-created tables). 
+
+**Strengths**
+- Managed operations for Connect.
+- Clear catalog support matrix.
+- Good fit for teams already using Aiven.
+
+**Tradeoffs**
+- Feature availability depends on the managed connector version and the catalog mode.
+- Still a connector-based approach, so file sizing and commit tuning matter.
+
+**Best fit**
+- Kafka Connect users who want managed ops and direct REST-catalog destinations.
+
+---
+
+### Redpanda (Kafka-compatible) + Iceberg Topics
+
+**What it is**
+- A Kafka-compatible streaming platform that can materialize topics directly into
+  Iceberg tables.
+
+**Feature set**
+- Strong emphasis on using an external REST catalog for production deployments.
+- Concrete REST catalog configuration knobs (endpoint, OAuth2, credentials). 
+
+**Strengths**
+- Fewer moving parts than “Kafka + Connect”.
+- Streaming system owns the write path, which can simplify operations.
+
+**Tradeoffs**
+- Platform-specific implementation and feature boundaries.
+- Typically focuses on append-style materialization, not complex transformations.
+
+**Best fit**
+- Teams that want broker-level “stream to Iceberg” with a REST catalog and minimal
+  external components.
+
+---
+
+### StreamNative / Apache Pulsar + Iceberg Sink Connector
+
+**What it is**
+- Pulsar IO sink connector that ingests from Pulsar topics and writes to Iceberg tables. 
+- StreamNative Cloud can provide this as a managed connector experience. 
+
+**Feature set**
+- Pulsar-native connector deployment model.
+- Catalog support depends on the connector version and underlying Iceberg libraries.
+
+**Strengths**
+- Natural fit for Pulsar-first architectures.
+- Connector-based model remains low code.
+
+**Tradeoffs**
+- Smaller ecosystem than Kafka for many teams.
+- Confirm catalog auth and REST support details for your specific catalog and connector version.
+
+**Best fit**
+- Pulsar users who want a low-code path to Iceberg tables without adding Kafka Connect.
+
+### RisingWave (Streaming SQL Database)
+
+**What it is**
+- A streaming SQL system that supports streaming writes to Iceberg tables. 
+- Explicit support for Iceberg REST catalogs via `catalog.type = 'rest'`.
+
+**Feature set**
+- Built-in Iceberg source and sink connectors.
+- REST catalog configuration is first-class. 
+- Can apply streaming SQL transformations before writing.
+
+**Strengths**
+- SQL-first development experience.
+- Strong option when you need transformations, joins, and aggregations in-stream.
+
+**Tradeoffs**
+- You operate a new system (or adopt a managed offering).
+- Storage and table-format constraints can apply depending on release.
+
+**Best fit**
+- Teams that want a streaming SQL layer that lands curated, query-ready tables into Iceberg.
+
+### Apache SeaTunnel (OSS, Config-driven Pipelines)
+
+**What it is**
+- An open source data integration engine that can run on several execution engines.
+- Provides an Iceberg sink connector with features like CDC mode, auto-create, and schema evolution. 
+
+**Feature set**
+- Iceberg sink connector with multi-table writes and schema evolution. 
+- Public guidance and examples for REST-catalog-compatible destinations such as
+  S3 Tables REST catalog flows.
+
+**Strengths**
+- OSS with a declarative configuration model.
+- Good fit when you want a standardized pipeline pattern across many connectors.
+
+**Tradeoffs**
+- You operate the runtime.
+- Connector capabilities vary by version, and REST-catalog auth details may require validation.
+
+**Best fit**
+- Teams that prefer OSS and config-driven pipelines, and can run a managed runtime themselves.
+
+
+## Quick Selection Guidance
+
+- **Lowest ops, Kafka-centric:** Confluent Tableflow. 
+- **Low-code, broadly compatible:** Kafka Connect Iceberg sink (self-managed or managed via Aiven). 
+- **Broker-native stream-to-Iceberg:** Redpanda Iceberg Topics with REST catalog.
+- **Need in-stream SQL transforms:** RisingWave. 
+- **Pulsar ecosystem:** StreamNative / Pulsar Iceberg sink. 
+- **OSS, config-first pipelines:** Apache SeaTunnel. 
 
 ## Summary
 
